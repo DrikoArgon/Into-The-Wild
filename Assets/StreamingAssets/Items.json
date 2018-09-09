@@ -1,0 +1,22 @@
+[
+	{
+		"id": 0,
+		"title": "Apple",
+		"description": "A red and delicious looking apple.",
+		"cost": 12,
+		"value": 6,
+		"stackable": true,
+		"quality": 0,
+		"slug": "apple"
+	},
+	{
+		"id": 1,
+		"title": "Axe",
+		"description": "Used to chop trees.",
+		"cost": 1000,
+		"value": 100,
+		"stackable": false,
+		"quality": 0,
+		"slug": "axe"
+	}
+]
