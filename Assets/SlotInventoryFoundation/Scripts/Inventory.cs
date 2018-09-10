@@ -285,8 +285,8 @@ public class Inventory : MonoBehaviour {
 	public void DropItem(int slotIndex){
 
 		GameObject droppedItem = Instantiate(items[slotIndex].itemData.pickUpPrefab, player.transform.position, Quaternion.identity);
-
 		droppedItem.GetComponent<ItemPickup>().amount = items[slotIndex].amount;
+		droppedItem.GetComponent<ItemPickup>().SetAsDroppedItem();
 
 		Remove(slotIndex);
 
@@ -297,6 +297,8 @@ public class Inventory : MonoBehaviour {
 		GameObject droppedItem = Instantiate(InventoryUI.instance.GetCurrentStackDivisionItem().itemData.pickUpPrefab, player.transform.position, Quaternion.identity);
 
 		droppedItem.GetComponent<ItemPickup>().amount = InventoryUI.instance.GetCurrentStackDivisionItem().amount;
+
+		droppedItem.GetComponent<ItemPickup>().SetAsDroppedItem();
 
 		InventoryUI.instance.ClearItemOnPointer();
 	}

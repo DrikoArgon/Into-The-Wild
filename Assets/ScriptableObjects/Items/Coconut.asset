@@ -13,10 +13,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Coconut
   icon: {fileID: 21300000, guid: 2f043bb39d08f3546b7ba17fe1c53d56, type: 3}
-  description: Hard as rock! YEEEEEEEEEEEEEEAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!
+  description: Hard as rock!
   cost: 50
   value: 15
   quality: 0
-  stackable: 0
+  stackable: 1
   pickUpPrefab: {fileID: 1000921529135894, guid: 60fa4d7c3d7367444b2472cb2d0bd39e,
     type: 2}
