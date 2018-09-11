@@ -122,6 +122,15 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 					Inventory.instance.AddItemToSlot(itemOnPointer, slotIndex);
 					InventoryUI.instance.ClearItemOnPointer(); 
 				}
+			}else{
+				if(item.itemData != null){
+					Inventory.instance.DefineItemToBeUsedSlot(slotIndex);
+					bool success = item.itemData.Use();
+					if(success){
+						InventoryUI.instance.HideInventory();
+					}
+
+				}
 			}
 		}
 	}

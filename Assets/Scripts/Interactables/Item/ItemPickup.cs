@@ -52,7 +52,7 @@ public class ItemPickup : MonoBehaviour {
 			bool wasPickedUp = Inventory.instance.AddItem(item, amount);
 
 			if(wasPickedUp){
-				Debug.Log("Obtained " + item.itemName + ": " + amount);
+				NotificationManager.instance.CreateNotificationOnPanel(item.icon, "Obtained " + item.itemName + ": " + amount);
 				Destroy(gameObject);
 			}
 		}

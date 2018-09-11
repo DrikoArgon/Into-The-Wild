@@ -23,6 +23,9 @@ public class PlayerMovement : MonoBehaviour {
 	private Rigidbody2D myRigidBody;
 	private Animator myAnimator;
 	// Use this for initialization
+
+	public bool walking;
+
 	void Start () {
 		myRigidBody = GetComponent<Rigidbody2D>();
 		myAnimator = GetComponent<Animator>();
@@ -33,6 +36,10 @@ public class PlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	// Inputs should be registered here
 	void Update () {
+
+		if(GameManager.instance.uiActive){
+			return;
+		}
 
 		if(Input.GetKey(moveLeftKey)){
 			movingLeft = true;
@@ -105,34 +112,59 @@ public class PlayerMovement : MonoBehaviour {
 
 	void MoveLeft(){
 
+		if(!walking){
+			myAnimator.Play("Walking");
+			walking = true;
+		}
+
 		myRigidBody.transform.position += Vector3.left * currentSpeed * Time.deltaTime;
-		myAnimator.SetBool("walking", true);
-		myAnimator.SetInteger("direction", 0);
+		myAnimator.SetFloat("directionHorizontal", -1);
+		myAnimator.SetFloat("directionVertical", 0);
+
 	}
 
 	void MoveRight(){
 
+		if(!walking){
+			myAnimator.Play("Walking");
+			walking = true;
+		}
+
 		myRigidBody.transform.position += Vector3.right * currentSpeed * Time.deltaTime;
-		myAnimator.SetBool("walking", true);
-		myAnimator.SetInteger("direction", 1);
+		myAnimator.SetFloat("directionHorizontal", 1);
+		myAnimator.SetFloat("directionVertical", 0);
+
 	}
 
 	void MoveUp(){
 
+		if(!walking){
+			myAnimator.Play("Walking");
+			walking = true;
+		}
+
 		myRigidBody.transform.position += Vector3.up * currentSpeed * Time.deltaTime;
-		myAnimator.SetBool("walking", true);
-		myAnimator.SetInteger("direction", 2);
+		myAnimator.SetFloat("directionHorizontal", 0);
+		myAnimator.SetFloat("directionVertical", 1);
 	}
 
 	void MoveDown(){
 
+		if(!walking){
+			myAnimator.Play("Walking");
+			walking = true;
+		}
+
 		myRigidBody.transform.position += Vector3.down * currentSpeed * Time.deltaTime;
-		myAnimator.SetBool("walking", true);
-		myAnimator.SetInteger("direction", 3);
+		myAnimator.SetFloat("directionHorizontal", 0);
+		myAnimator.SetFloat("directionVertical", -1);
+
 	}
 
 	void Idle(){
-		myAnimator.SetBool("walking", false);
+
+		myAnimator.Play("Idle");
+		walking = false;
 	
 	}
 }

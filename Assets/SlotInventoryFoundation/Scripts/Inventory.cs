@@ -22,6 +22,8 @@ public class Inventory : MonoBehaviour {
 
 	public GameObject player;
 
+	public int itemToBeUsedIndex = -1;
+
 	void Awake(){
 
 		if(instance != null){
@@ -301,5 +303,14 @@ public class Inventory : MonoBehaviour {
 		droppedItem.GetComponent<ItemPickup>().SetAsDroppedItem();
 
 		InventoryUI.instance.ClearItemOnPointer();
+	}
+
+	public void DefineItemToBeUsedSlot(int slotIndex){
+		itemToBeUsedIndex = slotIndex;
+	}
+
+	public void ConsumeItem(){
+		items[itemToBeUsedIndex].itemData.Consume();
+		DecreaseItemAmount(itemToBeUsedIndex, 1);
 	}
 }

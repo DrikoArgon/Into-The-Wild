@@ -16,7 +16,11 @@ public class Item : ScriptableObject {
 
 	public GameObject pickUpPrefab;
 
-	public virtual void Use(){
-		Debug.Log("Used " + itemName);
+	public virtual bool Use(){
+		return false;
+	}
+
+	public virtual void Consume(){
+		
 	}
 }

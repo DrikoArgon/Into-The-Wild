@@ -17,6 +17,10 @@ public class PlayerInteractionControls : MonoBehaviour {
 			return;
 		}
 
+		if(GameManager.instance.uiActive){
+			return;
+		}
+
 		if(Input.GetMouseButtonDown(1)){
 			RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 

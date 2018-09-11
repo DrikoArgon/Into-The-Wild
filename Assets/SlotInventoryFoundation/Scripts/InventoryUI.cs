@@ -16,11 +16,9 @@ public class InventoryUI : MonoBehaviour {
 	public GameObject stackedItemDivisionPrefab;
 	public StackableItemDivision currentStackedItemDivision;
 
-	private Vector3 screenPoint;
 	private Vector3 mousePosition;
 	public bool itemOnPointer;
 	public bool itemBeingDragged;
-
 
 	void Awake(){
 		instance = this;
@@ -35,7 +33,6 @@ public class InventoryUI : MonoBehaviour {
 
 		DefineSlotIndexes();
 
-		screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 	}
 	
 	// Update is called once per frame
@@ -49,6 +46,7 @@ public class InventoryUI : MonoBehaviour {
 			mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0)); 
 			currentStackedItemDivision.transform.position = new Vector3(mousePosition.x, mousePosition.y, 0);
 		}
+
 
 	}
 
@@ -72,6 +70,11 @@ public class InventoryUI : MonoBehaviour {
 
 		}
 
+	}
+
+	public void HideInventory(){
+
+		inventoryUI.SetActive(false);
 	}
 
 	public void InsertItemOnPointer(InventoryItem item){
@@ -148,4 +151,5 @@ public class InventoryUI : MonoBehaviour {
 	public void DeactivateTooltip(){
 		tooltip.GetComponent<InventoryTooltip>().Deactivate();
 	}
+
 }
