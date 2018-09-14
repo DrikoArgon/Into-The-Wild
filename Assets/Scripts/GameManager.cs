@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour {
 
 	public bool uiActive;
 
+	public string playerName;
+
+	public bool gamepadMode;
+
 	void Awake(){
 
 
@@ -21,7 +25,7 @@ public class GameManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		
+		playerName = "Ryan";
 	}
 	
 	// Update is called once per frame

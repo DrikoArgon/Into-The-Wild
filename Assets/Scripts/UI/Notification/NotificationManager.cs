@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NotificationManager : MonoBehaviour {
 
@@ -40,7 +41,7 @@ public class NotificationManager : MonoBehaviour {
 
 		GameManager.instance.uiActive = false;
 		if(result == true){
-			Inventory.instance.ConsumeItem();
+			inventory.ConsumeItem();
 		}
 	}
 

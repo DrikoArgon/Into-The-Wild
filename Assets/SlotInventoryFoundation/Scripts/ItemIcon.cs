@@ -9,6 +9,8 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
 	public InventorySlot mySlot;
 
+	public bool chestItem;
+
 	public void Start(){
 		mySlot = GetComponentInParent<InventorySlot>();
 	}
@@ -25,7 +27,7 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 				mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, screenPoint.z));
 
 				this.transform.localPosition = mousePosition;
-				this.transform.SetParent(InventoryUI.instance.inventoryUI.transform, false);
+				this.transform.SetParent(InventoryUI.instance.inventoryUI.transform.parent, false);
 				GetComponent<Image>().raycastTarget = false;
 			}
 		}
@@ -43,8 +45,9 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 	{
 
 		InventoryUI.instance.itemBeingDragged = false;
-		this.transform.SetParent(mySlot.transform.GetChild(0).transform, false);
+		this.transform.SetParent(mySlot.transform.transform, false);
 		this.transform.localPosition = Vector3.zero;
+		DeactivateVisualSelectionFeedback();
 		GetComponent<Image>().raycastTarget = true;
 		
 	}

@@ -38,7 +38,13 @@ public class InventoryUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetButtonDown("Inventory") && !itemBeingDragged && !itemOnPointer){
-			inventoryUI.SetActive(!inventoryUI.activeSelf);
+			if(inventoryUI.activeSelf){
+				HideInventory();
+				ChestUI.instance.HideInventory();
+			}else{
+				OpenInventory();
+			}
+
 		}
 
 		if(itemOnPointer && currentStackedItemDivision != null){
@@ -46,7 +52,6 @@ public class InventoryUI : MonoBehaviour {
 			mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0)); 
 			currentStackedItemDivision.transform.position = new Vector3(mousePosition.x, mousePosition.y, 0);
 		}
-
 
 	}
 
@@ -72,9 +77,17 @@ public class InventoryUI : MonoBehaviour {
 
 	}
 
+	public void OpenInventory(){
+		inventoryUI.SetActive(true);
+
+		GameManager.instance.uiActive = true;
+	}
+
 	public void HideInventory(){
 
+		DeactivateTooltip();
 		inventoryUI.SetActive(false);
+		GameManager.instance.uiActive = false;
 	}
 
 	public void InsertItemOnPointer(InventoryItem item){
@@ -86,7 +99,7 @@ public class InventoryUI : MonoBehaviour {
 		itemOnPointer = true;
 
 		//Create the object that will follow the mouse. This object contains the item's icon and amount
-		currentStackedItemDivision = Instantiate(stackedItemDivisionPrefab, inventoryUI.transform).GetComponent<StackableItemDivision>();
+		currentStackedItemDivision = Instantiate(stackedItemDivisionPrefab, inventoryUI.transform.parent).GetComponent<StackableItemDivision>();
 
 		//Sets the item on the new object that will follow the mouse
 		currentStackedItemDivision.SetItem(item); 
@@ -100,14 +113,23 @@ public class InventoryUI : MonoBehaviour {
 
 			InsertItemOnPointer(new InventoryItem(originalSlot.item.itemData, amount));
 
-			Inventory.instance.DecreaseItemAmount(originalSlot.slotIndex, amount);
+			if(originalSlot.chestSlot){
+				ChestInventoryManager.instance.DecreaseItemAmount(originalSlot.slotIndex, amount);
+			}else{
+				Inventory.instance.DecreaseItemAmount(originalSlot.slotIndex, amount);
+			}
+
 
 		}else{
 
 			if(currentStackedItemDivision != null){
 				if(currentStackedItemDivision.item.itemData.itemName == originalSlot.item.itemData.itemName){
 
-					Inventory.instance.DecreaseItemAmount(originalSlot.slotIndex, amount);
+					if(originalSlot.chestSlot){
+						ChestInventoryManager.instance.DecreaseItemAmount(originalSlot.slotIndex, amount);
+					}else{
+						Inventory.instance.DecreaseItemAmount(originalSlot.slotIndex, amount);
+					}
 					currentStackedItemDivision.IncreaseAmount(amount);
 
 				}
@@ -120,7 +142,12 @@ public class InventoryUI : MonoBehaviour {
 
 		InventoryItem slotItem = slot.item;
 
-		Inventory.instance.AddItemToSlot(currentStackedItemDivision.item, slot.slotIndex);
+		if(slot.chestSlot){
+			ChestInventoryManager.instance.AddItemToSlot(currentStackedItemDivision.item, slot.slotIndex);
+		}else{
+			Inventory.instance.AddItemToSlot(currentStackedItemDivision.item, slot.slotIndex);
+		}
+	
 		currentStackedItemDivision.SetItem(slotItem);
 
 	}

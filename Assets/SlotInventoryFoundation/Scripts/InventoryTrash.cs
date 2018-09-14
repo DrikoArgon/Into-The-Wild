@@ -8,7 +8,12 @@ public class InventoryTrash : MonoBehaviour, IDropHandler, IPointerClickHandler 
 		if(!InventoryUI.instance.itemOnPointer){
 			ItemIcon droppedItem = eventData.pointerDrag.GetComponent<ItemIcon>();
 
-			Inventory.instance.Remove(droppedItem.mySlot.slotIndex);
+			if(droppedItem.chestItem){
+				ChestInventoryManager.instance.Remove(droppedItem.mySlot.slotIndex);
+			}else{
+				Inventory.instance.Remove(droppedItem.mySlot.slotIndex);
+			}
+
 		}
 
 	}

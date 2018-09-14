@@ -83,6 +83,13 @@ public class PlayerMovement : MonoBehaviour {
 	//Movement should occur here
 	void FixedUpdate(){
 
+		if(GameManager.instance.uiActive){
+			if(movingLeft && movingRight && movingUp && movingDown){
+				Idle();
+			}
+			return;
+		}
+
 		if(movingLeft){
 			MoveLeft();
 		}

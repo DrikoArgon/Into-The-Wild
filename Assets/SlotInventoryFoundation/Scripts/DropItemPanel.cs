@@ -9,7 +9,12 @@ public class DropItemPanel : MonoBehaviour, IDropHandler, IPointerClickHandler {
 		if(!InventoryUI.instance.itemOnPointer){
 			ItemIcon droppedItem = eventData.pointerDrag.GetComponent<ItemIcon>();
 
-			Inventory.instance.DropItem(droppedItem.mySlot.slotIndex);
+			if(droppedItem.chestItem){
+				ChestInventoryManager.instance.DropItem(droppedItem.mySlot.slotIndex);
+			}else{
+				Inventory.instance.DropItem(droppedItem.mySlot.slotIndex);
+			}
+
 		}
 	}
 

@@ -2,43 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct InventoryItem{
+public class ChestInventoryManager : MonoBehaviour {
 
-	public Item itemData;
-	public int amount;
-
-	public InventoryItem(Item item, int amount){
-		this.itemData = item;
-		this.amount = amount;
-
-	}
-
-}
-
-public class Inventory : MonoBehaviour {
-
-	public static Inventory instance;
+	public static ChestInventoryManager instance;
 
 	public GameObject player;
 
-	public int itemToBeUsedIndex = -1;
+	public Chest currentChest;
 
 	void Awake(){
 
 		if(instance != null){
-			Debug.Log("More than one inventory instance found!");
+			Debug.Log("More than one chest inventory manager instance found!");
 		}
 		instance = this;
 	}
 
-	public delegate void OnItemChanged();
+	public delegate void OnChestItemChanged();
 
-	public OnItemChanged onItemChangedCallback;
+	public OnChestItemChanged onChestItemChangedCallback;
 
 	public List<InventoryItem> items = new List<InventoryItem>();
 
 	public int slotAmount = 30;
+
+	public void SetupChestInventory(List<InventoryItem> chestInv, Chest chest){
+
+		currentChest = chest;
+
+		for(int i = 0; i < slotAmount; i++){
+
+			items[i] = chestInv[i];
+		}
+
+		if(onChestItemChangedCallback != null){
+			onChestItemChangedCallback.Invoke();
+		}
+	}
+
+	public void UpdateChestItems(){
+
+		if(currentChest != null){
+			Debug.Log("Updating");
+			currentChest.UpdateChestItems(items);
+		}
+	}
 
 	public bool AddItem(Item item, int amount){
 
@@ -67,8 +75,8 @@ public class Inventory : MonoBehaviour {
 			return false;
 		}
 
-		if(onItemChangedCallback != null){
-			onItemChangedCallback.Invoke();
+		if(onChestItemChangedCallback != null){
+			onChestItemChangedCallback.Invoke();
 		}
 
 		return true;
@@ -81,8 +89,8 @@ public class Inventory : MonoBehaviour {
 
 		items[slotIndex] = emptyItem;
 
-		if(onItemChangedCallback != null){
-			onItemChangedCallback.Invoke();
+		if(onChestItemChangedCallback != null){
+			onChestItemChangedCallback.Invoke();
 		}
 	}
 
@@ -103,7 +111,7 @@ public class Inventory : MonoBehaviour {
 		return index;
 	}
 
-	public bool CheckInventorySpace(){
+	public bool CheckChestInventorySpace(){
 
 		foreach(InventoryItem item in items){
 
@@ -115,24 +123,13 @@ public class Inventory : MonoBehaviour {
 		return false;
 	}
 
-	public bool CheckInventorySpaceStackable(){
-
-		foreach(InventoryItem item in items){
-
-			if(item.itemData == null){ //If there is an element of the list without an Item, there is space in the inventory
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	bool AddItemToNewSlot(Item item, int amount){
 
-		bool hasSpace = CheckInventorySpace();
+		bool hasSpace = CheckChestInventorySpace();
 
 		if(!hasSpace){
-			Debug.Log("Inventory is full!");
+			Debug.Log("Chest is full!");
 			return false;
 		}
 
@@ -153,8 +150,8 @@ public class Inventory : MonoBehaviour {
 		InventoryItem newItem = new InventoryItem(item.itemData, item.amount);
 		items[slotIndex] = newItem;
 
-		if(onItemChangedCallback != null){
-			onItemChangedCallback.Invoke();
+		if(onChestItemChangedCallback != null){
+			onChestItemChangedCallback.Invoke();
 		}
 	}
 
@@ -175,8 +172,8 @@ public class Inventory : MonoBehaviour {
 				newItem.amount += amountToAdd;
 				items[index] = newItem;
 
-				if(onItemChangedCallback != null){
-					onItemChangedCallback.Invoke();
+				if(onChestItemChangedCallback != null){
+					onChestItemChangedCallback.Invoke();
 				}
 
 				return true;
@@ -192,14 +189,12 @@ public class Inventory : MonoBehaviour {
 			newItem.amount += amount;
 			items[index] = newItem;
 
-			if(onItemChangedCallback != null){
-				onItemChangedCallback.Invoke();
+			if(onChestItemChangedCallback != null){
+				onChestItemChangedCallback.Invoke();
 			}
 
 			return true;
 		}
-
-
 
 	}
 
@@ -213,8 +208,8 @@ public class Inventory : MonoBehaviour {
 		}else{
 			items[index] = newItem;
 
-			if(onItemChangedCallback != null){
-				onItemChangedCallback.Invoke();
+			if(onChestItemChangedCallback != null){
+				onChestItemChangedCallback.Invoke();
 			}
 		}
 
@@ -228,8 +223,8 @@ public class Inventory : MonoBehaviour {
 
 		items[originalSlotIndex] = emptyItem;
 
-		if(onItemChangedCallback != null){
-			onItemChangedCallback.Invoke();
+		if(onChestItemChangedCallback != null){
+			onChestItemChangedCallback.Invoke();
 		}
 	}
 
@@ -264,8 +259,8 @@ public class Inventory : MonoBehaviour {
 		items[newSlotIndex] = tempItem;
 		items[originalSlotIndex] = emptyItem;
 
-		if(onItemChangedCallback != null){
-			onItemChangedCallback.Invoke();
+		if(onChestItemChangedCallback != null){
+			onChestItemChangedCallback.Invoke();
 		}
 	}
 
@@ -277,24 +272,24 @@ public class Inventory : MonoBehaviour {
 
 		items[originalSlotIndex] = swappedItem;
 
-		if(onItemChangedCallback != null){
-			onItemChangedCallback.Invoke();
+		if(onChestItemChangedCallback != null){
+			onChestItemChangedCallback.Invoke();
 		}
 	}
 
 	public void SwapItemsBetweenInventories(int inventoryItemIndex, int chestItemIndex){
 
-		InventoryItem inventoryItem = items[inventoryItemIndex];
-		InventoryItem chestItem = ChestInventoryManager.instance.items[chestItemIndex];
+		InventoryItem chestItem = items[chestItemIndex];
+		InventoryItem inventoryItem = Inventory.instance.items[inventoryItemIndex];
 
-		items[inventoryItemIndex] = chestItem;
+		items[chestItemIndex] = inventoryItem;
 
-		ChestInventoryManager.instance.Remove(chestItemIndex);
+		Inventory.instance.Remove(inventoryItemIndex);
 
-		ChestInventoryManager.instance.AddItemToSlot(inventoryItem, chestItemIndex);
+		Inventory.instance.AddItemToSlot(chestItem, inventoryItemIndex);
 
-		if(onItemChangedCallback != null){
-			onItemChangedCallback.Invoke();
+		if(onChestItemChangedCallback != null){
+			onChestItemChangedCallback.Invoke();
 		}
 
 	}
@@ -320,29 +315,5 @@ public class Inventory : MonoBehaviour {
 		InventoryUI.instance.ClearItemOnPointer();
 	}
 
-	public void DefineItemToBeUsedSlot(int slotIndex){
-		itemToBeUsedIndex = slotIndex;
-	}
 
-	public void ConsumeItem(){
-		items[itemToBeUsedIndex].itemData.Consume();
-		DecreaseItemAmount(itemToBeUsedIndex, 1);
-	}
-
-	public bool CheckIfCanAddItems(List<Item> itemsToAdd){
-
-		int spaceAmount = 0;
-
-		foreach(InventoryItem item in items){
-			if(item.itemData == null){
-				spaceAmount++;
-			}
-		}
-
-		if(spaceAmount >= itemsToAdd.Count){
-			return true;
-		}else{
-			return false;
-		}
-	}
 }

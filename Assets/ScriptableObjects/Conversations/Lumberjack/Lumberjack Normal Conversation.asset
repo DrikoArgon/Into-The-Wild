@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7236980d3a15241419d12e404702cf10, type: 3}
+  m_Name: Lumberjack Normal Conversation
+  m_EditorClassIdentifier: 
+  sentences:
+  - characterName: Lumberjack
+    characterImage: {fileID: 21300000, guid: eb5d05807c940834c951b2f54952826e, type: 3}
+    text: Nothing better than chopping some wood in the morning.
+    appearRight: 1
+    hasChoice: 0
+    choices:
+    - text: You're crazy.
+      answer: {fileID: 11400000, guid: 49c18c3c1f9d84b428ba51c17263b765, type: 2}
+      errorConversation: {fileID: 0}
+      fondnessAmount: 3
+      itemsToGive: []
+      itemsToTake: []
+      effect: 2
+    - text: The best feeling there is.
+      answer: {fileID: 11400000, guid: 23282a5494adb4647b316cf66e454df1, type: 2}
+      errorConversation: {fileID: 0}
+      fondnessAmount: 3
+      itemsToGive: []
+      itemsToTake: []
+      effect: 1

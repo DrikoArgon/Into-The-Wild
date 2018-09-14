@@ -16,6 +16,9 @@ public class UseItemNotification : MonoBehaviour {
 	public bool acceptSelected;
 	private NotificationManager notificationManager;
 
+	public Image acceptOptionPanel;
+	public Image refuseOptionPanel;
+
 	public float timeBetweenEachCursorMovement = 0.3f;
 
 	void Start(){
@@ -28,17 +31,19 @@ public class UseItemNotification : MonoBehaviour {
 
 	void Update () {
 		if(gameObject.activeSelf){
-			if(!movingCursor){
-				if(Input.GetButtonDown("MoveRight") || Input.GetButtonDown("MoveLeft")){
-					StartCoroutine(MoveCursor());
+			if(GameManager.instance.gamepadMode){
+				if(!movingCursor){
+					if(Input.GetButtonDown("MoveRight") || Input.GetButtonDown("MoveLeft")){
+						StartCoroutine(MoveCursor());
+					}
 				}
-			}
 
-			if(Input.GetMouseButtonDown(0)){
-				if(acceptSelected){
-					Accept();
-				}else{
-					Cancel();
+				if(Input.GetMouseButtonDown(0)){
+					if(acceptSelected){
+						Accept();
+					}else{
+						Cancel();
+					}
 				}
 			}
 		}
@@ -60,7 +65,37 @@ public class UseItemNotification : MonoBehaviour {
 		itemIcon.sprite = null;
 		movingCursor = false;
 
+		acceptOptionPanel.color = new Color(acceptOptionPanel.color.r, acceptOptionPanel.color.g, acceptOptionPanel.color.b, 0);
+		refuseOptionPanel.color = new Color(refuseOptionPanel.color.r, refuseOptionPanel.color.g, refuseOptionPanel.color.b, 40f/255);
+
 		gameObject.SetActive(false);
+	}
+
+	public void SelectOption(){
+		if(acceptSelected){
+			Accept();
+		}else{
+			Cancel();
+		}
+	} 
+
+	public void ChangeSelectedOption(int optionIndex){
+
+		if(optionIndex == 1){
+
+			acceptSelected = true;
+			cursor.transform.position = confirmCursorPosition.position;
+			acceptOptionPanel.color = new Color(acceptOptionPanel.color.r, acceptOptionPanel.color.g, acceptOptionPanel.color.b, 40f/255);
+			refuseOptionPanel.color = new Color(refuseOptionPanel.color.r, refuseOptionPanel.color.g, refuseOptionPanel.color.b, 0);
+
+		}else if (optionIndex == 2){
+
+			acceptSelected = false;
+			cursor.transform.position = cancelCursorPosition.position;
+			acceptOptionPanel.color = new Color(acceptOptionPanel.color.r, acceptOptionPanel.color.g, acceptOptionPanel.color.b, 0);
+			refuseOptionPanel.color = new Color(refuseOptionPanel.color.r, refuseOptionPanel.color.g, refuseOptionPanel.color.b, 40f/255);
+
+		}
 	}
 
 	IEnumerator MoveCursor(){
