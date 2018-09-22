@@ -10,14 +10,15 @@ public class Item : ScriptableObject {
 	public string description = "Item Description";
 
 	public int cost = 0;
-	public int value = 0;
+	public int goldValue = 0;
+	public int spiritValue = 0;
 	public int quality = 0;
 	public bool stackable = true;
 
 	public GameObject pickUpPrefab;
 
-	public virtual bool Use(){
-		return false;
+	public virtual void Use(){
+
 	}
 
 	public virtual void Consume(){

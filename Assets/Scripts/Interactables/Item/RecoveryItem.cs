@@ -7,16 +7,15 @@ public class RecoveryItem : Item {
 	public int energyRecoveryAmount;
 
 
-	public override bool Use ()
+	public override void Use ()
 	{
-		Debug.Log("Trying to use item");
+		InventoryUI.instance.HideInventory();
 		NotificationManager.instance.ShowUseItemNotification(icon);
-		return true;
+
 	}
 
 	public override void Consume(){
 
-		Debug.Log("Recovered " + healthRecoveryAmount + " health!");
-		Debug.Log("Recovered " + energyRecoveryAmount + " health!");
+		PlayerStats.instance.Recover(healthRecoveryAmount, energyRecoveryAmount);
 	}
 }

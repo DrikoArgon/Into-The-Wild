@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
 
 	public InventoryItem item;
 
 	public Image itemIcon;
-	public Text itemAmount;
+	public TextMeshProUGUI itemAmount;
 	public int slotIndex;
 
 	public bool chestSlot;
@@ -215,7 +216,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 					InventoryUI.instance.ClearItemOnPointer(); 
 				}
 			}else{
-				if(ChestUI.instance.gameObject.activeSelf){
+				if(ChestUI.instance.chestUI.activeSelf){
 					HandleItemTransfer();
 				}else{
 					HandleItemUsage();
@@ -245,11 +246,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 			if(item.itemData != null){
 
 				Inventory.instance.DefineItemToBeUsedSlot(slotIndex);
-				bool success = item.itemData.Use();
-
-				if(success){
-					InventoryUI.instance.HideInventory();
-				}
+				item.itemData.Use();
 
 			}
 		}

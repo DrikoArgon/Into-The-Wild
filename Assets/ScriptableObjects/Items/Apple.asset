@@ -20,4 +20,5 @@ MonoBehaviour:
   stackable: 1
   pickUpPrefab: {fileID: 1669038814703972, guid: d73541870dccfa043a31b5bd0a89d47a,
     type: 2}
-  healthRecoveryAmount: 5
+  healthRecoveryAmount: -10
+  energyRecoveryAmount: 0
