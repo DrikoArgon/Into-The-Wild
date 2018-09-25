@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
+
 	public float speed;
 	private float currentSpeed;
 
@@ -11,7 +12,6 @@ public class PlayerMovement : MonoBehaviour {
 	public KeyCode moveRightKey;
 	public KeyCode moveUpKey;
 	public KeyCode moveDownKey;
-
 
 	public bool movingUp;
 	public bool movingDown;
@@ -22,9 +22,10 @@ public class PlayerMovement : MonoBehaviour {
 
 	private Rigidbody2D myRigidBody;
 	private Animator myAnimator;
-	// Use this for initialization
 
+	public PlayerDirection playerDirection = PlayerDirection.Down;
 	public bool walking;
+
 
 	void Start () {
 		myRigidBody = GetComponent<Rigidbody2D>();
@@ -90,20 +91,20 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 
-		if(movingLeft){
-			MoveLeft();
-		}
-
-		if(movingRight){
-			MoveRight();
-		}
-
 		if(movingUp){
 			MoveUp();
 		}
 
 		if(movingDown){
 			MoveDown();
+		}
+
+		if(movingLeft){
+			MoveLeft();
+		}
+
+		if(movingRight){
+			MoveRight();
 		}
 
 		if(diagonal){
@@ -128,6 +129,13 @@ public class PlayerMovement : MonoBehaviour {
 		myAnimator.SetFloat("directionHorizontal", -1);
 		myAnimator.SetFloat("directionVertical", 0);
 
+		if(playerDirection != PlayerDirection.Left){
+
+			playerDirection = PlayerDirection.Left;
+
+		}
+
+
 	}
 
 	void MoveRight(){
@@ -141,6 +149,11 @@ public class PlayerMovement : MonoBehaviour {
 		myAnimator.SetFloat("directionHorizontal", 1);
 		myAnimator.SetFloat("directionVertical", 0);
 
+		if(playerDirection != PlayerDirection.Right){
+
+			playerDirection = PlayerDirection.Right;
+
+		}
 	}
 
 	void MoveUp(){
@@ -153,6 +166,12 @@ public class PlayerMovement : MonoBehaviour {
 		myRigidBody.transform.position += Vector3.up * currentSpeed * Time.deltaTime;
 		myAnimator.SetFloat("directionHorizontal", 0);
 		myAnimator.SetFloat("directionVertical", 1);
+
+		if(playerDirection != PlayerDirection.Up && !diagonal){
+
+			playerDirection = PlayerDirection.Up;
+
+		}
 	}
 
 	void MoveDown(){
@@ -166,6 +185,11 @@ public class PlayerMovement : MonoBehaviour {
 		myAnimator.SetFloat("directionHorizontal", 0);
 		myAnimator.SetFloat("directionVertical", -1);
 
+		if(playerDirection != PlayerDirection.Down && !diagonal){
+
+			playerDirection = PlayerDirection.Down;
+
+		}
 	}
 
 	void Idle(){
@@ -174,4 +198,11 @@ public class PlayerMovement : MonoBehaviour {
 		walking = false;
 	
 	}
+}
+
+public enum PlayerDirection{
+	Up,
+	Down,
+	Left,
+	Right
 }

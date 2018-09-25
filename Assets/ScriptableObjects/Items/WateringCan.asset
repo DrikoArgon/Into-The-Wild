@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95bd36a5e4339840bce0074fdd7a9ca, type: 3}
+  m_Name: WateringCan
+  m_EditorClassIdentifier: 
+  itemName: Watering Can
+  icon: {fileID: 21300000, guid: 13a49078f6296d3498ddef836dc9d367, type: 3}
+  description: Keep your crops hydrated.
+  isTool: 1
+  cost: 0
+  goldValue: 0
+  spiritValue: 0
+  quality: 0
+  stackable: 1
+  pickUpPrefab: {fileID: 1331648715175932, guid: c0bcdd94a001fed49be4a59e79de8d9c,
+    type: 2}

@@ -44,6 +44,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 
 	public void OnDrop (PointerEventData eventData)
 	{
+		Debug.Log("On drop");
 		if(!InventoryUI.instance.itemOnPointer){
 
 			ItemIcon droppedItem = eventData.pointerDrag.GetComponent<ItemIcon>();
@@ -66,7 +67,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 					}
 
 				}else{
-
+					Debug.Log("From different inventory");
 					if(item.itemData == null){ //This slot is empty so the item that was dropped in this slot needs to be removed from the inventory and added to the chest
 						ChestInventoryManager.instance.AddItemToSlot(droppedItem.mySlot.item,slotIndex);
 						Inventory.instance.Remove(droppedItem.mySlot.slotIndex);
@@ -74,8 +75,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 
 						//It the item is stackable and is the same item, remove from the inventory and increase the amount in the chest
 						if(droppedItem.mySlot.item.itemData.itemName == item.itemData.itemName && (droppedItem.mySlot.item.itemData.stackable && item.itemData.stackable)){
+							Debug.Log("Same item and stackable");
+							ChestInventoryManager.instance.IncreaseItemAmount(slotIndex, droppedItem.mySlot.item.amount);
 							Inventory.instance.Remove(droppedItem.mySlot.slotIndex);
-							ChestInventoryManager.instance.IncreaseItemAmount(droppedItem.mySlot.slotIndex, droppedItem.mySlot.item.amount);
 						}else{
 							//If the item is different or is not stackable, swaps the items between the inventory and the chest
 							ChestInventoryManager.instance.SwapItemsBetweenInventories(droppedItem.mySlot.slotIndex, slotIndex);
@@ -96,8 +98,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 
 						//It the item is stackable and is the same item, remove from the inventory and increase the amount in the chest
 						if(droppedItem.mySlot.item.itemData.itemName == item.itemData.itemName && (droppedItem.mySlot.item.itemData.stackable && item.itemData.stackable)){
+							Inventory.instance.IncreaseItemAmount(slotIndex, droppedItem.mySlot.item.amount);
 							ChestInventoryManager.instance.Remove(droppedItem.mySlot.slotIndex);
-							Inventory.instance.IncreaseItemAmount(droppedItem.mySlot.slotIndex, droppedItem.mySlot.item.amount);
 						}else{
 							//If the item is different or is not stackable, swaps the items between the inventory and the chest
 							Inventory.instance.SwapItemsBetweenInventories(droppedItem.mySlot.slotIndex, slotIndex);
@@ -125,12 +127,14 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 
 	public void OnPointerClick (PointerEventData eventData)
 	{
+
 		if(eventData.button == PointerEventData.InputButton.Right){ //Right mouse button pressed to divide stacks
 			HandleRightClick();
 		}else if(eventData.button == PointerEventData.InputButton.Left){ //Left mouse buttom pressed to use item or position items that are being held
 
 			HandleLeftClick();
 		}
+		
 	}
 
 	public void OnPointerEnter (PointerEventData eventData)
@@ -155,6 +159,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 	}
 
 	void HandleLeftClick(){
+
+		Debug.Log("Left click");
 		//If the cursor is holding an item that was divided
 			if(InventoryUI.instance.itemOnPointer){ 
 		
@@ -216,10 +222,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler, 
 					InventoryUI.instance.ClearItemOnPointer(); 
 				}
 			}else{
-				if(ChestUI.instance.chestUI.activeSelf){
-					HandleItemTransfer();
-				}else{
-					HandleItemUsage();
+				if(item.itemData != null){
+					if(ChestUI.instance.chestUI.activeSelf){
+						HandleItemTransfer();
+					}else{
+						HandleItemUsage();
+					}
 				}
 			}
 	}

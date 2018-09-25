@@ -9,6 +9,7 @@ public class Item : ScriptableObject {
 	[TextArea]
 	public string description = "Item Description";
 
+	public bool isTool = false;
 	public int cost = 0;
 	public int goldValue = 0;
 	public int spiritValue = 0;

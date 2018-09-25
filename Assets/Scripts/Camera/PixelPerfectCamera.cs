@@ -11,7 +11,7 @@ public class PixelPerfectCamera : MonoBehaviour {
 		 snapValue = 1f / pixelsPerUnit;
 	}
 
-	void FixedUpdate(){
+	void LateUpdate(){
 
 		transform.position = new Vector3(
 			(float)Mathf.Round(transform.parent.position.x / snapValue) * snapValue,

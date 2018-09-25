@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sentences:
   - characterName: Lumberjack
-    characterImage: {fileID: 21300000, guid: eb5d05807c940834c951b2f54952826e, type: 3}
+    characterImage: {fileID: 21300000, guid: 6f9327e8cd5feb74790f7505c02d56a9, type: 3}
     text: Nothing better than chopping some wood in the morning.
     appearRight: 1
     hasChoice: 0

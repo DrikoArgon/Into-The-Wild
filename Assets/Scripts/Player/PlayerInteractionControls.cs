@@ -53,6 +53,12 @@ public class PlayerInteractionControls : MonoBehaviour {
 	public void SetCurrentItem(Item item){
 		currentItemSelected = item;
 
+		if(currentItemSelected.isTool){
+			PlayerTileSelector.instance.StartTrackingPosition();
+		}else{
+			PlayerTileSelector.instance.StopTrackingPosition();
+		}
+
 		if(onItemChangedCallback != null){
 			onItemChangedCallback.Invoke();
 		}
@@ -69,6 +75,8 @@ public class PlayerInteractionControls : MonoBehaviour {
 	public void ClearInteractable(){
 		currentInteractableSelected = null;
 
+	
+
 		if(onInteractableChangedCallback != null){
 			onInteractableChangedCallback.Invoke();
 		}
@@ -76,6 +84,8 @@ public class PlayerInteractionControls : MonoBehaviour {
 
 	public void ClearItem(){
 		currentItemSelected = null;
+
+		PlayerTileSelector.instance.StopTrackingPosition();
 
 		if(onItemChangedCallback != null){
 			onItemChangedCallback.Invoke();
